@@ -58,7 +58,7 @@ public class JMBPApplication {
         return new CommandLineRunner() {
             @Override
             public void run(String... args) throws Exception {
-                context.getBean(StartProcess.ProcessStarter.class).placeBE(new BE("test be"));
+                context.getBean(StartProcess.ProcessStarter.class).placeBE(new BusinessEvent("test be"));
             }
         };
     }

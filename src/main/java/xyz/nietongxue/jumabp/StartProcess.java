@@ -31,7 +31,7 @@ public class StartProcess {
     public interface ProcessStarter {
 
         @Gateway(requestChannel = "eventStartFlow.input")
-        void placeBE(BE be);
+        void placeBE(BusinessEvent businessEvent);
 
     }
 
@@ -46,9 +46,9 @@ public class StartProcess {
         return (IntegrationFlowDefinition<?> f) -> f
                 .channel((Channels c) -> c.executor(Executors.newCachedThreadPool()))
                 .handle(m -> {
-                            BE be = (BE) m.getPayload();
-                            BusinessWorkflowMapping mapping = businessWorkflowMappingRepository.getMapping(be);
-                            startProcess(be, mapping);
+                            BusinessEvent businessEvent = (BusinessEvent) m.getPayload();
+                            BusinessWorkflowMapping mapping = businessWorkflowMappingRepository.getMapping(businessEvent);
+                            startProcess(businessEvent, mapping);
                         }
                 );
 
@@ -111,7 +111,7 @@ public class StartProcess {
         }
     }
 
-    public void startProcess(BE be, BusinessWorkflowMapping mapping) {
+    public void startProcess(BusinessEvent businessEvent, BusinessWorkflowMapping mapping) {
 
         String url = "http://localhost:8080/runtime/process-instances";
         StartProcessRequest requestJson = new StartProcessRequest();
